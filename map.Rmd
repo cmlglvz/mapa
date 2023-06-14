@@ -39,5 +39,5 @@ fig <- fig %>% layout(title = "Insertar Título",
                         legend = list(orientation = "vertical"))
 fig <- fig %>% config(mapboxAccesToken = Sys.getenv("MAPBOX_TOKEN"))
 
-saveWidget(fig, file = "~/sentry/mapa/index.html")
+saveWidget(fig, file = "~/mapa/index.html")
 ```
