@@ -1,0 +1,43 @@
+---
+title: "map"
+author: "Camilo Gálvez A."
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(plotly)
+library(mapboxapi)
+library(htmlwidgets)
+```
+
+```{r}
+data <- read.csv("~/mapa/data/coordenadas.csv", header = TRUE, sep = ";", dec = ".")
+```
+
+```{r}
+Sys.setenv("MAPBOX_TOKEN" = "pk.eyJ1IjoiY21sZ2x2emEiLCJhIjoiY2xpdWw5d3AyMGN4NDNtcGkzem5uMHpnNSJ9.1m51FtOnjmGYja9ozTwV_g")
+```
+
+```{r, warning=FALSE,error=FALSE}
+fig <- data %>% 
+  plot_mapbox(lat = ~Latitude, 
+              lon = ~Longitud, 
+              split = ~Origin, 
+              size = 2, 
+              mode = "scattermapbox", 
+              hoverinfo = "Site"
+              ) 
+fig <- fig %>% layout(title = "Insertar Título", 
+                        font = list(color = "white"), 
+                        plot_bgcolor = "#191A1A", 
+                        paper_bgcolor = "#191A1A", 
+                        mapbox = list(style = "dark", 
+                                      zoom = 1.5, 
+                                      center = list(lon = 0, lat = 11)), 
+                        legend = list(orientation = "vertical"))
+fig <- fig %>% config(mapboxAccesToken = Sys.getenv("MAPBOX_TOKEN"))
+
+saveWidget(fig, file = "~/sentry/mapa/index.html")
+```
